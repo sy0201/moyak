@@ -1,0 +1,77 @@
+import { useNavigate } from 'react-router-dom';
+import Navigation from '../../components/Navigation';
+
+export default function HomePage() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col bg-white min-h-screen">
+      <Navigation title="모약모약" />
+
+      <div className="flex flex-col px-5 pt-8 pb-10 gap-6">
+        {/* Hero Section */}
+        <div className="flex flex-col items-center pt-4 pb-2">
+          <span className="text-[56px] mb-4" role="img" aria-label="약">💊</span>
+          <h2 className="text-[22px] font-bold text-[#191F28] mb-2 text-center">
+            내 약, 한눈에 확인하세요
+          </h2>
+          <p className="text-[14px] text-[#8B95A1] text-center leading-relaxed">
+            카메라로 찍으면 약 정보를 바로 알려드려요
+          </p>
+        </div>
+
+        {/* Camera Button */}
+        <button
+          onClick={() => navigate('/identify')}
+          className="w-full h-[120px] rounded-2xl bg-[#3182F6] flex flex-col items-center justify-center gap-3 active:bg-[#1B64DA] transition-colors"
+        >
+          <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+            <path d="M15.5 10.5L14 13H9C7.9 13 7 13.9 7 15V29C7 30.1 7.9 31 9 31H31C32.1 31 33 30.1 33 29V15C33 13.9 32.1 13 31 13H26L24.5 10.5H15.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="20" cy="22" r="5" stroke="white" strokeWidth="2" />
+          </svg>
+          <span className="text-white text-[16px] font-semibold">카메라로 약 촬영하기</span>
+        </button>
+
+        {/* Menu Buttons */}
+        <div className="flex gap-3">
+          <button
+            onClick={() => navigate('/identify?mode=search')}
+            className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
+          >
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <circle cx="14" cy="14" r="7" stroke="#3182F6" strokeWidth="2" />
+              <path d="M19 19L25 25" stroke="#3182F6" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <span className="text-[14px] font-semibold text-[#191F28]">약 검색</span>
+            <span className="text-[12px] text-[#8B95A1]">모양/색상으로 찾기</span>
+          </button>
+
+          <button
+            onClick={() => navigate('/cabinet')}
+            className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
+          >
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect x="6" y="8" width="20" height="18" rx="3" stroke="#3182F6" strokeWidth="2" />
+              <path d="M6 14H26" stroke="#3182F6" strokeWidth="2" />
+              <path d="M14 14V8" stroke="#3182F6" strokeWidth="2" />
+            </svg>
+            <span className="text-[14px] font-semibold text-[#191F28]">내 약통</span>
+            <span className="text-[12px] text-[#8B95A1]">유통기한 관리</span>
+          </button>
+        </div>
+
+        {/* Recent History */}
+        <div>
+          <h3 className="text-[16px] font-semibold text-[#191F28] mb-3">최근 검색한 약</h3>
+          <div className="rounded-2xl bg-[#F4F5F7] py-8 flex flex-col items-center gap-2">
+            <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="20" stroke="#D1D6DB" strokeWidth="2" strokeDasharray="4 4" />
+              <path d="M18 24H30M24 18V30" stroke="#D1D6DB" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <p className="text-[14px] text-[#8B95A1]">아직 검색 기록이 없어요</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
