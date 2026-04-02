@@ -98,24 +98,17 @@ export async function searchMedicine(
   page = 1,
   numOfRows = 10,
 ): Promise<{ items: DrugInfo[]; totalCount: number }> {
-  const query = new URLSearchParams({
-    serviceKey: API_KEY,
-    type: 'json',
-    pageNo: String(page),
-    numOfRows: String(numOfRows),
-  });
+  let url = `${BASE_URL}?serviceKey=${API_KEY}&type=json&pageNo=${page}&numOfRows=${numOfRows}`;
 
   if (params.shape && SHAPE_MAP[params.shape]) {
-    query.set('DRUG_SHAPE', SHAPE_MAP[params.shape]);
+    url += `&DRUG_SHAPE=${SHAPE_MAP[params.shape]}`;
   }
   if (params.color && COLOR_MAP[params.color]) {
-    query.set('COLOR_CLASS1', COLOR_MAP[params.color]);
+    url += `&COLOR_CLASS1=${COLOR_MAP[params.color]}`;
   }
   if (params.imprint?.trim()) {
-    query.set('PRINT_FRONT', params.imprint.trim());
+    url += `&PRINT_FRONT=${params.imprint.trim()}`;
   }
-
-  const url = `${BASE_URL}?${query.toString()}`;
   console.log('[medicineApi] 요청 URL:', url);
   console.log('[medicineApi] 요청 파라미터:', {
     shape: params.shape ? SHAPE_MAP[params.shape] : null,

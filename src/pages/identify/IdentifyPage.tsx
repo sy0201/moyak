@@ -38,16 +38,18 @@ export default function IdentifyPage() {
     setNoResult(false);
 
     try {
-      const { items } = await searchMedicine({
+      console.log('검색 파라미터:', { shape: selectedShape, color: selectedColor, imprint });
+      const result = await searchMedicine({
         shape: selectedShape,
         color: selectedColor,
         imprint: imprint.trim() || null,
       });
 
-      if (items.length === 0) {
+      console.log('API 결과:', result);
+      if (result.items.length === 0) {
         setNoResult(true);
       } else {
-        navigate('/result', { state: { items } });
+        navigate('/result', { state: { items: result.items, totalCount: result.totalCount } });
       }
     } catch {
       setNoResult(true);
