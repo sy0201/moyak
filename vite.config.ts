@@ -8,4 +8,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api/drug': {
+        target: 'https://apis.data.go.kr',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/drug/, ''),
+        secure: false,
+      },
+    },
+  },
 })

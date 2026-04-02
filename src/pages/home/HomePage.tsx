@@ -8,9 +8,9 @@ export default function HomePage() {
     <div className="flex flex-col bg-white min-h-screen">
       <Navigation title="모약모약" />
 
-      <div className="flex flex-col px-5 pt-8 pb-10 gap-6">
+      <div className="flex flex-col px-5 pt-6 pb-32">
         {/* Hero Section */}
-        <div className="flex flex-col items-center pt-4 pb-2">
+        <div className="flex flex-col items-center pt-4 pb-2 mb-6">
           <span className="text-[56px] mb-4" role="img" aria-label="약">💊</span>
           <h2 className="text-[22px] font-bold text-[#191F28] mb-2 text-center">
             내 약, 한눈에 확인하세요
@@ -23,7 +23,7 @@ export default function HomePage() {
         {/* Camera Button */}
         <button
           onClick={() => navigate('/identify')}
-          className="w-full h-[120px] rounded-2xl bg-[#3182F6] flex flex-col items-center justify-center gap-3 active:bg-[#1B64DA] transition-colors"
+          className="w-full h-[120px] rounded-2xl bg-[#3182F6] p-4 flex flex-col items-center justify-center gap-3 active:bg-[#1B64DA] transition-colors mb-6"
         >
           <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
             <path d="M15.5 10.5L14 13H9C7.9 13 7 13.9 7 15V29C7 30.1 7.9 31 9 31H31C32.1 31 33 30.1 33 29V15C33 13.9 32.1 13 31 13H26L24.5 10.5H15.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -33,10 +33,10 @@ export default function HomePage() {
         </button>
 
         {/* Menu Buttons */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 mb-6">
           <button
             onClick={() => navigate('/identify?mode=search')}
-            className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
+            className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] p-4 flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
           >
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
               <circle cx="14" cy="14" r="7" stroke="#3182F6" strokeWidth="2" />
@@ -48,7 +48,7 @@ export default function HomePage() {
 
           <button
             onClick={() => navigate('/cabinet')}
-            className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
+            className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] p-4 flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
           >
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
               <rect x="6" y="8" width="20" height="18" rx="3" stroke="#3182F6" strokeWidth="2" />
@@ -63,8 +63,8 @@ export default function HomePage() {
         {/* Recent History */}
         <div>
           <h3 className="text-[16px] font-semibold text-[#191F28] mb-3">최근 검색한 약</h3>
-          <div className="rounded-2xl bg-[#F4F5F7] py-8 flex flex-col items-center gap-2">
-            <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+          <div className="rounded-2xl bg-[#F4F5F7] p-4 py-12 flex flex-col items-center gap-2">
+            <svg width="40" height="40" viewBox="0 0 48 48" fill="none" className="mb-3">
               <circle cx="24" cy="24" r="20" stroke="#D1D6DB" strokeWidth="2" strokeDasharray="4 4" />
               <path d="M18 24H30M24 18V30" stroke="#D1D6DB" strokeWidth="2" strokeLinecap="round" />
             </svg>
