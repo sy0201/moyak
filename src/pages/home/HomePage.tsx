@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import { getSearchHistory } from '../../utils/searchHistory';
+import { navigateWithTransition } from '../../utils/navigateWithTransition';
+import type { DrugInfo } from '../../api/medicineApi';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [history] = useState<DrugInfo[]>(getSearchHistory);
 
   return (
     <div className="flex flex-col bg-white min-h-screen">
@@ -22,7 +27,7 @@ export default function HomePage() {
 
         {/* Camera Button */}
         <button
-          onClick={() => navigate('/identify')}
+          onClick={() => navigateWithTransition(navigate,'/camera')}
           className="w-full h-[120px] rounded-2xl bg-[#3182F6] p-4 flex flex-col items-center justify-center gap-3 active:bg-[#1B64DA] transition-colors mb-6"
         >
           <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
@@ -35,7 +40,7 @@ export default function HomePage() {
         {/* Menu Buttons */}
         <div className="flex gap-3 mb-6">
           <button
-            onClick={() => navigate('/identify?mode=search')}
+            onClick={() => navigateWithTransition(navigate,'/identify?mode=search')}
             className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] p-4 flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
           >
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
@@ -47,7 +52,7 @@ export default function HomePage() {
           </button>
 
           <button
-            onClick={() => navigate('/cabinet')}
+            onClick={() => navigateWithTransition(navigate,'/cabinet')}
             className="flex-1 h-[100px] rounded-2xl bg-[#F4F5F7] p-4 flex flex-col items-center justify-center gap-2 active:bg-[#E5E8EB] transition-colors"
           >
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
@@ -63,13 +68,36 @@ export default function HomePage() {
         {/* Recent History */}
         <div>
           <h3 className="text-[16px] font-semibold text-[#191F28] mb-3">최근 검색한 약</h3>
-          <div className="rounded-2xl bg-[#F4F5F7] p-4 py-12 flex flex-col items-center gap-2">
-            <svg width="40" height="40" viewBox="0 0 48 48" fill="none" className="mb-3">
-              <circle cx="24" cy="24" r="20" stroke="#D1D6DB" strokeWidth="2" strokeDasharray="4 4" />
-              <path d="M18 24H30M24 18V30" stroke="#D1D6DB" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p className="text-[14px] text-[#8B95A1]">아직 검색 기록이 없어요</p>
-          </div>
+          {history.length === 0 ? (
+            <div className="rounded-2xl bg-[#F4F5F7] p-4 py-12 flex flex-col items-center gap-2">
+              <svg width="40" height="40" viewBox="0 0 48 48" fill="none" className="mb-3">
+                <circle cx="24" cy="24" r="20" stroke="#D1D6DB" strokeWidth="2" strokeDasharray="4 4" />
+                <path d="M18 24H30M24 18V30" stroke="#D1D6DB" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <p className="text-[14px] text-[#8B95A1]">아직 검색 기록이 없어요</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {history.map((drug) => (
+                <button
+                  key={drug.itemSeq}
+                  onClick={() => navigateWithTransition(navigate,'/result', { state: { items: [drug] } })}
+                  className="flex items-center gap-3 p-3 rounded-2xl bg-[#F4F5F7] text-left active:bg-[#E5E8EB] transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0">
+                    <span className="text-[20px]">💊</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-[#191F28] truncate">{drug.name}</p>
+                    <p className="text-[12px] text-[#8B95A1]">{drug.manufacturer}</p>
+                  </div>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="shrink-0">
+                    <path d="M9 5l7 7-7 7" stroke="#8B95A1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

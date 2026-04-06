@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
 import { searchMedicine } from '../../api/medicineApi';
+import { navigateWithTransition } from '../../utils/navigateWithTransition';
 
 const SHAPES = [
   { label: '원형', value: 'circle' },
@@ -31,28 +32,18 @@ export default function IdentifyPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [imprint, setImprint] = useState('');
   const [loading, setLoading] = useState(false);
-  const [noResult, setNoResult] = useState(false);
 
   const handleSearch = async () => {
     setLoading(true);
-    setNoResult(false);
-
     try {
-      console.log('검색 파라미터:', { shape: selectedShape, color: selectedColor, imprint });
-      const result = await searchMedicine({
+      const { items } = await searchMedicine({
         shape: selectedShape,
         color: selectedColor,
         imprint: imprint.trim() || null,
       });
-
-      console.log('API 결과:', result);
-      if (result.items.length === 0) {
-        setNoResult(true);
-      } else {
-        navigate('/result', { state: { items: result.items, totalCount: result.totalCount } });
-      }
-    } catch {
-      setNoResult(true);
+      navigateWithTransition(navigate, '/result', { state: { items } });
+    } catch (e) {
+      console.error('검색 실패:', e);
     } finally {
       setLoading(false);
     }
@@ -60,11 +51,11 @@ export default function IdentifyPage() {
 
   return (
     <div className="flex flex-col bg-white min-h-screen">
-      <Navigation title="약 검색" onBack={() => navigate(-1)} />
+      <Navigation title="약 검색" onBack={() => navigateWithTransition(navigate, -1)} />
 
-      <div className="flex-1 flex flex-col px-5 pt-6 pb-32">
+      <div className="flex-1 flex flex-col px-5 pt-6 pb-10">
         {/* Shape Filter */}
-        <div className="mb-6">
+        <div>
           <h3 className="text-[16px] font-semibold text-[#191F28] mb-3">알약 모양</h3>
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
             {SHAPES.map((shape) => (
@@ -84,7 +75,7 @@ export default function IdentifyPage() {
         </div>
 
         {/* Color Filter */}
-        <div className="mb-6">
+        <div className="pt-6">
           <h3 className="text-[16px] font-semibold text-[#191F28] mb-3">알약 색상</h3>
           <div className="flex gap-3 flex-wrap">
             {COLORS.map((color) => (
@@ -116,25 +107,16 @@ export default function IdentifyPage() {
         </div>
 
         {/* Imprint Input */}
-        <div>
+        <div className="pt-6">
           <h3 className="text-[16px] font-semibold text-[#191F28] mb-3">각인 문자</h3>
           <input
             type="text"
             value={imprint}
             onChange={(e) => setImprint(e.target.value)}
             placeholder="알약에 적힌 문자를 입력하세요"
-            className="w-full h-[56px] px-3 rounded-xl bg-[#F4F5F7] border border-[#E5E8EB] text-[15px] text-[#191F28] placeholder-[#8B95A1] outline-none focus:ring-2 focus:ring-[#3182F6] transition-shadow"
+            className="w-full h-[56px] px-5 rounded-xl bg-[#F4F5F7] border border-[#E5E8EB] text-[15px] text-[#191F28] placeholder-[#8B95A1] outline-none focus:ring-2 focus:ring-[#3182F6] transition-shadow"
           />
         </div>
-
-        {/* No Result Message */}
-        {noResult && (
-          <div className="mt-6 rounded-2xl bg-[#F4F5F7] py-10 flex flex-col items-center gap-2">
-            <span className="text-[32px]">🔍</span>
-            <p className="text-[14px] text-[#8B95A1]">검색 결과가 없어요</p>
-            <p className="text-[13px] text-[#8B95A1]">다른 조건으로 다시 검색해보세요</p>
-          </div>
-        )}
       </div>
 
       {/* Search Button */}
@@ -142,19 +124,9 @@ export default function IdentifyPage() {
         <button
           onClick={handleSearch}
           disabled={loading}
-          className="w-full h-[52px] rounded-xl text-[16px] font-semibold bg-[#3182F6] text-white active:bg-[#1B64DA] transition-colors disabled:opacity-60"
+          className="w-full h-[52px] rounded-xl text-[16px] font-semibold bg-[#3182F6] text-white active:bg-[#1B64DA] transition-colors disabled:opacity-50"
         >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              검색 중...
-            </span>
-          ) : (
-            '검색하기'
-          )}
+          {loading ? '검색 중...' : '검색하기'}
         </button>
       </div>
     </div>
